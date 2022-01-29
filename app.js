@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { createArticle } = require('./controllers/articles');
 const { createUser } = require('./controllers/users');
+const users = require('./routes/users');
 
 const { PORT = 3000 } = process.env;
 
@@ -12,6 +13,8 @@ app.use(express.json());
 
 app.post('/signup', createUser);
 app.post('/articles', createArticle);
+
+app.use('/', users);
 
 mongoose.connect('mongodb://localhost:27017/news-explorer', {
   useNewUrlParser: true,

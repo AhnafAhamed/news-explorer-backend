@@ -23,4 +23,16 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { createUser };
+const getCurrentUser = (req, res, next) => {
+  console.log(req.user);
+  users.findById(req.user._id)
+    .then((user) => {
+      if (!user) {
+        console.log('User not found');
+      }
+      return res.status(200).send(user);
+    })
+    .catch(next);
+};
+
+module.exports = { createUser, getCurrentUser };
