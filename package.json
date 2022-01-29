@@ -1,0 +1,32 @@
+{
+  "name": "news-explorer-backend",
+  "version": "1.0.0",
+  "description": "This is the repo for the backend of News Explorer Web App.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AhnafAhamed/news-explorer-backend.git"
+  },
+  "author": "Ahnaf Ahamed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AhnafAhamed/news-explorer-backend/issues"
+  },
+  "homepage": "https://github.com/AhnafAhamed/news-explorer-backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.7.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "nodemon": "^2.0.15"
+  }
+}
