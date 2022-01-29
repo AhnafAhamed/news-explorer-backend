@@ -25,6 +25,14 @@ const createArticle = (req, res, next) => {
     });
 };
 
+const getArticles = (req, res, next) => {
+  articles.find({})
+    .then((articleList) => {
+      res.status(200).send(articleList);
+    })
+    .catch(next);
+};
+
 const deleteArticle = (req, res, next) => {
   articles.findByIdAndRemove(req.params.articleId)
     .then((article) => {
@@ -36,4 +44,4 @@ const deleteArticle = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { createArticle, deleteArticle };
+module.exports = { createArticle, deleteArticle, getArticles };

@@ -1,5 +1,7 @@
 const router = require('express').Router();
-const { deleteArticle } = require('../controllers/articles');
+const { deleteArticle, getArticles } = require('../controllers/articles');
+
+router.get('/articles', getArticles);
 
 router.delete('/articles/:articleId', deleteArticle);
 
