@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const articles = require('../models/articles');
 
 const createArticle = (req, res, next) => {
@@ -24,4 +25,15 @@ const createArticle = (req, res, next) => {
     });
 };
 
-module.exports = { createArticle };
+const deleteArticle = (req, res, next) => {
+  articles.findByIdAndRemove(req.params.articleId)
+    .then((article) => {
+      if (!article) {
+        console.log('No article found');
+      }
+      return res.status(200).send({ message: 'Article deleted successfully' });
+    })
+    .catch(next);
+};
+
+module.exports = { createArticle, deleteArticle };
