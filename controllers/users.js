@@ -24,7 +24,6 @@ const createUser = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  console.log(req.user);
   users.findById(req.user._id)
     .then((user) => {
       if (!user) {
