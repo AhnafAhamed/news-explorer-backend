@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cors = require('cors');
-const { errors } = require('celebrate');
+const { errors, Joi, celebrate } = require('celebrate');
 const { createArticle } = require('./controllers/articles');
 const { createUser, login } = require('./controllers/users');
 const users = require('./routes/users');
@@ -33,8 +33,19 @@ app.options('*', cors());
 app.use(helmet());
 app.use(requestLogger);
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().required().min(2).max(30),
+    email: Joi.string.required().email(),
+    password: Joi.string().required(),
+  }),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
 app.post('/articles', createArticle);
 
 app.use(auth);
