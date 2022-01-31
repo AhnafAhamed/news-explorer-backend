@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { createArticle } = require('./controllers/articles');
-const { createUser } = require('./controllers/users');
+const { createUser, login } = require('./controllers/users');
 const users = require('./routes/users');
 const articles = require('./routes/articles');
 
@@ -13,6 +13,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/signup', createUser);
+app.post('/signin', login);
 app.post('/articles', createArticle);
 
 app.use('/', users);
