@@ -46,10 +46,10 @@ app.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login);
-app.post('/articles', createArticle);
 
 app.use(auth);
 
+app.post('/articles', createArticle);
 app.use('/', users);
 app.use('/', articles);
 
