@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 const articles = require('../models/articles');
+const NotFoundError = require('../errors/not-found-error');
+const AuthorizationError = require('../errors/auth-error');
 
 const createArticle = (req, res, next) => {
   const {
@@ -37,7 +39,9 @@ const deleteArticle = (req, res, next) => {
   articles.findByIdAndRemove(req.params.articleId)
     .then((article) => {
       if (!article) {
-        console.log('No article found');
+        throw new NotFoundError('Article not found');
+      } else if (article.owner.toString() !== req.user._id) {
+        throw new AuthorizationError('User not authorized to delete card');
       }
       return res.status(200).send({ message: 'Article deleted successfully' });
     })

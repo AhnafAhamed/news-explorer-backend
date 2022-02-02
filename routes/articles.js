@@ -6,7 +6,7 @@ router.get('/articles', getArticles);
 
 router.delete('/articles/:articleId', celebrate({
   params: Joi.object().keys({
-    articleId: Joi.string().hex().length(24),
+    articleId: Joi.string(),
   }),
 }), deleteArticle);
 
