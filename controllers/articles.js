@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 const articles = require('../models/articles');
 const NotFoundError = require('../errors/not-found-error');
-const AuthorizationError = require('../errors/auth-error');
 const BadRequestError = require('../errors/bad-request-error');
+const ForbiddenError = require('../errors/forbidden-error');
 
 const createArticle = (req, res, next) => {
   const {
@@ -39,16 +39,36 @@ const getArticles = (req, res, next) => {
 };
 
 const deleteArticle = (req, res, next) => {
-  articles.findByIdAndRemove(req.params.articleId)
+  articles.findById(req.params.articleId)
+    .orFail()
     .then((article) => {
-      if (!article) {
-        throw new NotFoundError('Article not found');
-      } else if (article.owner.toString() !== req.user._id) {
-        throw new AuthorizationError('User not authorized to delete card');
+      if (!(article.owner.toString() === req.user._id)) {
+        throw new ForbiddenError('Action forbidden');
       }
-      return res.status(200).send({ message: 'Article deleted successfully' });
+      articles.findByIdAndDelete(req.params.articleId)
+        .orFail()
+        .then(() => {
+          res.send({ message: 'Article deleted successfully' });
+        })
+        .catch((error) => {
+          if (error.name === 'CastError') {
+            return next(new BadRequestError('Invalid articleId'));
+          }
+          if (error.name === 'DocumentNotFoundError') {
+            return next(new NotFoundError('Article not found'));
+          }
+          return next(error);
+        });
     })
-    .catch(next);
+    .catch((error) => {
+      if (error.name === 'CastError') {
+        return next(new BadRequestError('Invalid articleId'));
+      }
+      if (error.name === 'DocumentNotFoundError') {
+        return next(new NotFoundError('Article not found'));
+      }
+      return next(error);
+    });
 };
 
 module.exports = { createArticle, deleteArticle, getArticles };
