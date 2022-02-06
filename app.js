@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const cors = require('cors');
 const { errors, Joi, celebrate } = require('celebrate');
-const { createArticle } = require('./controllers/articles');
 const { createUser, login } = require('./controllers/users');
 const users = require('./routes/users');
 const articles = require('./routes/articles');
@@ -49,7 +48,6 @@ app.post('/signin', celebrate({
 
 app.use(auth);
 
-app.post('/articles', createArticle);
 app.use('/', users);
 app.use('/', articles);
 
