@@ -11,18 +11,14 @@ const auth = require('./middleware/auth');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const NotFoundError = require('./errors/not-found-error');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, NODE_ENV, MONGO_URL } = process.env;
 
 const app = express();
 
 require('dotenv').config();
 
-mongoose.connect('mongodb://localhost:27017/news-explorer', {
+mongoose.connect(NODE_ENV === 'production' ? MONGO_URL : 'mongodb://localhost:27017/news-explorer', {
   useNewUrlParser: true,
-}).then(() => {
-  console.log('DB Connected');
-}).catch((err) => {
-  console.log(err);
 });
 
 app.use(express.json());
