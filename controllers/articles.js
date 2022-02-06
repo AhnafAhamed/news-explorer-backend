@@ -31,7 +31,7 @@ const createArticle = (req, res, next) => {
 };
 
 const getArticles = (req, res, next) => {
-  articles.find({})
+  articles.find({ owner: req.user._id })
     .then((articleList) => {
       res.status(200).send(articleList);
     })
