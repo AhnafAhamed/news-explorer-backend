@@ -2,11 +2,13 @@
 const articles = require('../models/articles');
 const NotFoundError = require('../errors/not-found-error');
 const AuthorizationError = require('../errors/auth-error');
+const BadRequestError = require('../errors/bad-request-error');
 
 const createArticle = (req, res, next) => {
   const {
-    keyword, title, text, date, source, link, image, owner,
+    keyword, title, text, date, source, link, image,
   } = req.body;
+  const owner = req.user._id;
   articles
     .create({
       keyword,
@@ -19,12 +21,13 @@ const createArticle = (req, res, next) => {
       owner,
     })
     .then((article) => res.status(200).send(article))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        console.log('validation Error');
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        return next(new BadRequestError('Validation Error'));
       }
-      console.log('Error');
-    });
+      return next(error);
+    })
+    .catch(next);
 };
 
 const getArticles = (req, res, next) => {
