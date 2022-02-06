@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const articles = require('../models/articles');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
