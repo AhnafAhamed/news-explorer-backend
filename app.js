@@ -10,6 +10,7 @@ const articles = require('./routes/articles');
 const auth = require('./middleware/auth');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const NotFoundError = require('./errors/not-found-error');
+const limiter = require('./helpers/limiter');
 
 const { PORT = 3000, NODE_ENV, MONGO_URL } = process.env;
 
@@ -27,6 +28,7 @@ app.use(cors());
 app.options('*', cors());
 app.use(helmet());
 app.use(requestLogger);
+app.use(limiter);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
